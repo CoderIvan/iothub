@@ -1,0 +1,26 @@
+version: '3'
+
+services:
+  emqx:
+    image: emqx/emqx:5.4.1
+    container_name: emqx
+    environment:
+    - "EMQX_NODE__NAME=emqx@vm03"
+    - "EMQX_CLUSTER__DISCOVERY_STRATEGY=static"
+    - "EMQX_CLUSTER__STATIC__SEEDS=[emqx@vm01,emqx@vm02,emqx@vm03]"
+    healthcheck:
+      test: ["CMD", "/opt/emqx/bin/emqx ctl", "status"]
+      interval: 5s
+      timeout: 25s
+      retries: 5
+    ports:
+      - 1883:1883
+      - 8083:8083
+      - 8084:8084
+      - 8883:8883
+      - 18083:18083
+    network_mode: host
+    restart: always
+    volumes:
+      - ./data:/opt/emqx/data
+      - ./log:/opt/emqx/log

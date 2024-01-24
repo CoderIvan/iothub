@@ -1,0 +1,19 @@
+{
+  "name": "iothub_business",
+  "version": "1.0.0",
+  "main": "index.js",
+  "license": "MIT",
+  "dependencies": {
+    "amqplib": "^0.10.3",
+    "axios": "^1.6.5",
+    "dotenv": "^16.3.2",
+    "pino": "^8.17.2",
+    "uuid": "^9.0.1"
+  },
+  "devDependencies": {
+    "eslint": "^8.56.0",
+    "eslint-config-airbnb-base": "^15.0.0",
+    "eslint-plugin-import": "^2.29.1",
+    "pino-pretty": "^10.3.1"
+  }
+}

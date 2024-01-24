@@ -1,0 +1,11 @@
+version: '3'
+services:
+  redis:
+    image: redis
+    container_name: redis
+    volumes:
+      - ./config/redis:/usr/local/etc/redis
+      - ./data/redis:/data
+    ports:
+      - 6379:6379
+    restart: always

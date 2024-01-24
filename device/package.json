@@ -1,0 +1,17 @@
+{
+  "name": "iothub_device_sdk",
+  "version": "1.0.0",
+  "main": "index.js",
+  "license": "MIT",
+  "dependencies": {
+    "jsonwebtoken": "^9.0.2",
+    "mqtt": "^5.3.4",
+    "pino": "^8.17.2"
+  },
+  "devDependencies": {
+    "eslint": "^8.56.0",
+    "eslint-config-airbnb-base": "^15.0.0",
+    "eslint-plugin-import": "^2.29.1",
+    "pino-pretty": "^10.3.1"
+  }
+}

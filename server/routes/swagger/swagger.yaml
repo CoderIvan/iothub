@@ -1,0 +1,130 @@
+openapi: 3.0.0
+info:
+  description: IotHub
+  version: 1.0.0
+  title: IotHub
+servers:
+  - description: 本地
+    url: "/api"
+paths:
+  /devices:
+    post:
+      summary: 设备注册
+      tags: 
+        - devices
+      requestBody:
+        required: true
+        content:
+          application/json:
+            schema:
+              type: object
+              properties:
+                product_name:
+                  type: string
+                  description: 设备类型
+                device_name:
+                  type: string
+                  description: 设备名称
+                password:
+                  type: string
+                  description: 设备密码
+              required:
+                - product_name
+                - device_name
+                - password
+            examples:
+              ivan01:
+                value:
+                  product_name: supertype
+                  device_name: ivan01
+                  password: ivan01
+              ivan02:
+                value:
+                  product_name: supertype
+                  device_name: ivan02
+                  password: ivan02
+              ivan03:
+                value:
+                  product_name: supertype
+                  device_name: ivan03
+                  password: ivan03
+      responses:
+        "200":
+          description: 操作成功
+    delete:
+      summary: 设备注销
+      tags: 
+        - devices
+      requestBody:
+        required: true
+        content:
+          application/json:
+            schema:
+              type: object
+              properties:
+                product_name:
+                  type: string
+                  description: 设备类型
+                device_name:
+                  type: string
+                  description: 设备名称
+              required:
+                - product_name
+                - device_name
+            examples:
+              ivan01:
+                value:
+                  product_name: supertype
+                  device_name: ivan01
+              ivan02:
+                value:
+                  product_name: supertype
+                  device_name: ivan02
+              ivan03:
+                value:
+                  product_name: supertype
+                  device_name: ivan03
+      responses:
+        "200":
+          description: 操作成功
+  /{product_name}/{device_name}/rpc:
+    post:
+      summary: 给设备发送信息，并等待终端回复
+      parameters:
+        - name: product_name
+          in: path
+          description: 设备类型
+          required: true
+          example: supertype
+        - name: device_name
+          in: path
+          description: 设备名
+          required: true
+          example: ivan01
+      requestBody:
+        required: true
+        content:
+          application/json:
+            schema:
+              type: object
+              properties:
+                command_name:
+                  type: string
+                  description: 指令名称
+                payload:
+                  type: string
+                  description: 指令内容，BASE64编码
+                expires_at:
+                  type: integer
+                  description: 指令的超时时间，Unix时间戳，单位秒
+              required:
+                - command_name
+                - payload
+            examples:
+              HelthCheck(ping):
+                value:
+                  command_name: HelthCheck
+                  payload: cGluZw==
+      responses:
+        "200":
+          description: 操作成功

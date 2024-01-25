@@ -1,5 +1,7 @@
 const pino = require('pino')
 
+const config = require('../config')
+
 const envToLogger = {
 	development: {
 		level: 'info',
@@ -15,4 +17,4 @@ const envToLogger = {
 	production: true,
 }
 
-module.exports = pino(envToLogger[process.env.LOGGER] || true)
+module.exports = pino(envToLogger[config.LOGGER] || true)

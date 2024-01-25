@@ -6,7 +6,6 @@
   "dependencies": {
     "amqplib": "^0.10.3",
     "axios": "^1.6.5",
-    "dotenv": "^16.3.2",
     "pino": "^8.17.2",
     "uuid": "^9.0.1"
   },

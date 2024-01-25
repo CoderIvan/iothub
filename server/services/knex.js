@@ -1,11 +1,15 @@
-const knex = require('knex')({
+const knexFactory = require('knex')
+
+const config = require('../config')
+
+const knex = knexFactory({
 	client: 'mysql',
 	connection: {
-		host: process.env.MYSQL_HOST,
-		port: Number(process.env.MYSQL_PORT),
-		user: process.env.MYSQL_USER,
-		password: process.env.MYSQL_PASSWORD,
-		database: process.env.MYSQL_DATABASE,
+		host: config.MYSQL.HOST,
+		port: Number(config.MYSQL.PORT),
+		user: config.MYSQL.USER,
+		password: config.MYSQL.PASSWORD,
+		database: config.MYSQL.DATABASE,
 	},
 })
 

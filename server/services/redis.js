@@ -1,10 +1,18 @@
 const redis = require('redis')
+const { REDIS } = require('../config')
 
-const getClientPromise = redis.createClient({
-	url: 'redis://vm01:6379',
-}).connect()
+let client
 
-const getClient = () => getClientPromise
+const getClient = async () => {
+	if (!client) {
+		client = await redis.createClient({
+			url: `redis://${REDIS.HOST}:${REDIS.PORT}`,
+		}).connect()
+	}
+	return client
+}
+
+getClient()
 
 module.exports = {
 	getClient,

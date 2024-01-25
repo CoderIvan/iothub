@@ -1,5 +1,6 @@
 const rabbitmq = require('../../../services/rabbitmq')
 const { getClient } = require('../../../services/redis')
+const config = require('../../../config')
 
 module.exports = async (fastify) => {
 	/**
@@ -128,7 +129,7 @@ module.exports = async (fastify) => {
 			 * EX seconds -- Set the specified expire time, in seconds (a positive integer).
 			 * PX milliseconds -- Set the specified expire time, in milliseconds (a positive integer).
 			 */
-			await redis.set(key, payload, 'NX', 'EX', process.env.RPC_MAX_TIMEOUT)
+			await redis.set(key, payload, 'NX', 'EX', config.RPC.TIMEOUT)
 		}
 		reply.send()
 	})

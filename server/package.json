@@ -9,10 +9,10 @@
   "dependencies": {
     "amqplib": "^0.10.3",
     "axios": "^1.6.5",
-    "dotenv": "^16.3.1",
     "fastify": "^4.25.2",
     "knex": "^3.1.0",
     "mysql": "^2.18.1",
+    "pino": "^8.17.2",
     "redis": "^4.6.12",
     "uuid": "^9.0.1"
   },

@@ -1,4 +1,5 @@
 const { getClient } = require('./redis')
+const config = require('../config')
 
 async function sleep(ms) {
 	return new Promise((resolve) => {
@@ -8,17 +9,16 @@ async function sleep(ms) {
 	})
 }
 
-const RPC_DELAY = Number(process.env.RPC_DELAY || '10')
-
 async function waitKey(key, expireAt) {
+	const expireAtMS = expireAt * 1000
 	const redis = await getClient()
-	while (Math.floor(Date.now() / 1000) < expireAt) {
+	while (Date.now() < expireAtMS) {
 		// eslint-disable-next-line no-await-in-loop
 		const value = await redis.get(key)
 		if (value !== null && value !== undefined) {
 			return value
 		}
-		sleep(RPC_DELAY)
+		sleep(config.RPC.DELAY)
 	}
 	return null
 }

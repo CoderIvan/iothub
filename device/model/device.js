@@ -73,11 +73,17 @@ class IotDevice extends EventEmitter {
 				if (!isNil(expiresAt) && expiresAt <= Math.floor(Date.now() / 1000)) {
 					return
 				}
+				if (commandName === '$set_ntp') {
+					const { device_send, iothub_recv, iothub_send } = JSON.parse(reqBuffer.toString('utf8'))
+					const time = ((iothub_recv - device_send) - (Date.now() - iothub_send)) / 2
+					this.emit('ntp_set', time)
+					return
+				}
 				/**
-			 *
-			 * @param {Buffer} respData
-			 * @returns
-			 */
+				 *
+				 * @param {Buffer} respData
+				 * @returns
+				 */
 				const respondFunc = async (resBuffer) => {
 					if (!(resBuffer && resBuffer.length > 0)) {
 						return
@@ -120,6 +126,16 @@ class IotDevice extends EventEmitter {
 		const topic = ['upload', 'data', this.productName, this.deviceName, version, type].join('/')
 
 		await this.client.publishAsync(topic, data, { qos: 1 })
+	}
+
+	async ntpRequest() {
+		if (isNil(this.client)) {
+			return
+		}
+
+		const topic = ['get', this.productName, this.deviceName, '$ntp'].join('/')
+
+		await this.client.publishAsync(topic, Buffer.from(JSON.stringify({ device_send: Date.now() })), { qos: 1 })
 	}
 }
 

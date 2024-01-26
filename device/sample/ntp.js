@@ -6,18 +6,22 @@ async function main() {
 		productName: 'supertype',
 		deviceName: 'ivan01',
 		password: 'ivan01',
+
+		clean: false,
 	}, {
 		address: 'vm01',
 	})
 
+	device.on('ntp_set', async (serverTime) => {
+		logger.info({
+			serverTime,
+		}, `[${device.username}] ntp_set`)
+	})
+
 	await device.connect()
 	logger.info(`[${device.username}] device is online`)
-
-	await device.publish(Buffer.from('Hello World'))
-	logger.info(`[${device.username}] publish 'Hello World'`)
-
-	await device.disconnect()
-	logger.info(`[${device.username}] device is offline`)
+	await device.ntpRequest()
+	logger.info(`[${device.username}] ntpRequest`)
 }
 
 main()

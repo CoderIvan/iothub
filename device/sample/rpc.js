@@ -1,13 +1,4 @@
-const logger = require('pino')({
-	transport: {
-		target: 'pino-pretty',
-		options: {
-			translateTime: 'SYS:standard',
-			ignore: 'pid,hostname',
-			singleLine: true,
-		},
-	},
-})
+const logger = require('../logger')
 const IotDevice = require('../model/device')
 
 async function main() {

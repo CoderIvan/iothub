@@ -1,6 +1,8 @@
 const rabbitmq = require('../../../services/rabbitmq')
+const emqx = require('../../../services/emqx')
 const { getClient } = require('../../../services/redis')
 const config = require('../../../config')
+const getRequestID = require('../../../services/request_id')
 
 module.exports = async (fastify) => {
 	/**
@@ -130,6 +132,20 @@ module.exports = async (fastify) => {
 			 * PX milliseconds -- Set the specified expire time, in milliseconds (a positive integer).
 			 */
 			await redis.set(key, payload, 'NX', 'EX', config.RPC.TIMEOUT)
+		} else if (topic.startsWith('get/')) {
+			// get/:ProductName/:DeviceName/Resource/:MessageID
+			const [productName, deviceName, resource] = topic.slice('get/'.length).split('/')
+			if (resource.startsWith('$')) {
+				if (resource === '$ntp') {
+					const { device_send } = JSON.parse(Buffer.from(payload, 'base64').toString())
+					const data = Buffer.from(JSON.stringify({
+						device_send,
+						iothub_recv: Date.now(), // 微妙，但又不能取Date.now()
+						iothub_send: Date.now(),
+					})).toString('base64')
+					await emqx.publish(['cmd', productName, deviceName, '$set_ntp', getRequestID()].join('/'), data)
+				}
+			}
 		}
 		reply.send()
 	})

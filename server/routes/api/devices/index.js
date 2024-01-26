@@ -37,6 +37,12 @@ module.exports = async (fastify) => {
 			}, {
 				username,
 				permission: 'allow',
+				action: 'publish',
+				// get/:ProductName/:DeviceName/:Resource/:MessageID
+				topic: `get/${product_name}/${device_name}/+/#`,
+			}, {
+				username,
+				permission: 'allow',
 				action: 'subscribe',
 				// cmd/:ProductName/:DeviceName/:CommandName/:RequestID/:ExpiresAt
 				topic: `cmd/${product_name}/${device_name}/+/+/#`,
